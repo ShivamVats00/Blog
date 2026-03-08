@@ -47,14 +47,14 @@ export default function InteractionLogs({ postId, onClose }: InteractionLogsProp
             if (post) {
                 setPostContent(post.content.substring(0, 100) + (post.content.length > 100 ? "..." : ""));
                 setViews(
-                    post.views.map((v) => ({
+                    post.views.map((v: any) => ({
                         ...v,
                         viewedAt: v.viewedAt.toISOString ? v.viewedAt.toISOString() : String(v.viewedAt),
                         guest: v.guest,
                     }))
                 );
                 setLikes(
-                    post.likes.map((l) => ({
+                    post.likes.map((l: any) => ({
                         ...l,
                         likedAt: l.likedAt.toISOString ? l.likedAt.toISOString() : String(l.likedAt),
                         guest: l.guest,
