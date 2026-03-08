@@ -55,5 +55,5 @@ export async function getGuestLikes(guestId: string, postIds: string[]) {
         select: { postId: true },
     });
 
-    return likes.map((l) => l.postId);
+    return likes.map((l: { postId: string }) => l.postId);
 }
