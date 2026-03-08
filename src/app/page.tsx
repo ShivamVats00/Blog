@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic";
 export default async function HomePage() {
   const posts = await getPosts();
 
-  const serializedPosts = posts.map((p) => ({
+  const serializedPosts = posts.map((p: any) => ({
     ...p,
     createdAt: p.createdAt.toISOString(),
   }));

@@ -17,7 +17,7 @@ export default async function AdminPage() {
     }
 
     const posts = await getPosts();
-    const serializedPosts = posts.map((p) => ({
+    const serializedPosts = posts.map((p: any) => ({
         ...p,
         createdAt: p.createdAt.toISOString(),
     }));
