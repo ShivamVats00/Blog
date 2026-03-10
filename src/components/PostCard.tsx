@@ -4,6 +4,11 @@ import { useRef, useEffect, useState, useCallback } from "react";
 import { Heart, Eye } from "lucide-react";
 import { recordView, toggleLike } from "@/actions/interactions";
 import PostContent from "./PostContent";
+import TwitterEmbed from "./TwitterEmbed";
+import YouTubeEmbed from "./YouTubeEmbed";
+
+const TWITTER_URL_REGEX = /(?:twitter\.com|x\.com)\/\w+\/status\/\d+/;
+const YOUTUBE_URL_REGEX = /(?:youtube\.com\/(?:watch|embed|v|shorts)|youtu\.be\/)/;
 
 interface PostCardProps {
     post: {
@@ -91,21 +96,27 @@ export default function PostCard({ post, guestId, initiallyLiked }: PostCardProp
                 <PostContent content={post.content} />
 
                 {post.mediaUrl && (
-                    <div className="mb-5 rounded-xl overflow-hidden border border-border/50">
-                        {post.mediaType?.startsWith("video") ? (
-                            <video
-                                src={post.mediaUrl}
-                                controls
-                                className="w-full max-h-[500px] object-cover"
-                            />
-                        ) : (
-                            <img
-                                src={post.mediaUrl}
-                                alt="Post media"
-                                className="w-full max-h-[500px] object-cover"
-                            />
-                        )}
-                    </div>
+                    TWITTER_URL_REGEX.test(post.mediaUrl) ? (
+                        <TwitterEmbed url={post.mediaUrl} />
+                    ) : YOUTUBE_URL_REGEX.test(post.mediaUrl) ? (
+                        <YouTubeEmbed url={post.mediaUrl} />
+                    ) : (
+                        <div className="mb-5 rounded-xl overflow-hidden border border-border/50">
+                            {post.mediaType?.startsWith("video") ? (
+                                <video
+                                    src={post.mediaUrl}
+                                    controls
+                                    className="w-full max-h-[500px] object-cover"
+                                />
+                            ) : (
+                                <img
+                                    src={post.mediaUrl}
+                                    alt="Post media"
+                                    className="w-full max-h-[500px] object-cover"
+                                />
+                            )}
+                        </div>
+                    )
                 )}
 
                 <div className="flex items-center justify-between pt-5 mt-6 border-t border-border/50">
