@@ -8,12 +8,7 @@ interface PostContentProps {
 }
 
 const TWITTER_REGEX = /https?:\/\/(?:www\.)?(?:twitter\.com|x\.com)\/\w+\/status\/\d+/;
-const YOUTUBE_REGEX = /https?:\/\/(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)/;
-
-function extractYouTubeId(url: string): string | null {
-    const match = url.match(YOUTUBE_REGEX);
-    return match ? match[1] : null;
-}
+const YOUTUBE_REGEX = /https?:\/\/(?:www\.)?(?:m\.)?(?:youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|v\/|shorts\/)|youtu\.be\/)[A-Za-z0-9_-]{11}/;
 
 export default function PostContent({ content }: PostContentProps) {
     const lines = content.split("\n");
@@ -27,15 +22,15 @@ export default function PostContent({ content }: PostContentProps) {
                 if (TWITTER_REGEX.test(trimmed)) {
                     const match = trimmed.match(TWITTER_REGEX);
                     if (match) {
-                        return <TwitterEmbed key={i} tweetUrl={match[0]} />;
+                        return <TwitterEmbed key={i} url={match[0]} />;
                     }
                 }
 
                 // Check for YouTube URL
                 if (YOUTUBE_REGEX.test(trimmed)) {
-                    const videoId = extractYouTubeId(trimmed);
-                    if (videoId) {
-                        return <YouTubeEmbed key={i} videoId={videoId} />;
+                    const match = trimmed.match(YOUTUBE_REGEX);
+                    if (match) {
+                        return <YouTubeEmbed key={i} url={match[0]} />;
                     }
                 }
 

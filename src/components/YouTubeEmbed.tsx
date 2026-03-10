@@ -1,13 +1,35 @@
 "use client";
 
 interface YouTubeEmbedProps {
-    videoId: string;
+    url: string;
 }
 
-export default function YouTubeEmbed({ videoId }: YouTubeEmbedProps) {
+const YOUTUBE_REGEX =
+    /^(?:https?:\/\/)?(?:www\.)?(?:m\.)?(?:youtube\.com\/(?:(?:watch\?(?:.*&)?v=)|(?:embed\/)|(?:v\/)|(?:shorts\/))|youtu\.be\/)([A-Za-z0-9_-]{11})(?:[?&].*)?$/i;
+
+export default function YouTubeEmbed({ url }: YouTubeEmbedProps) {
+    const match = url.match(YOUTUBE_REGEX);
+    const videoId = match?.[1];
+
+    if (!videoId) {
+        return (
+            <a
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary underline text-sm font-body"
+            >
+                {url}
+            </a>
+        );
+    }
+
     return (
         <div className="youtube-embed-container my-4">
-            <div className="relative w-full overflow-hidden rounded-xl border border-border/50 bg-black/20" style={{ paddingBottom: "56.25%" }}>
+            <div
+                className="relative w-full overflow-hidden rounded-xl border border-border/50 bg-black/20"
+                style={{ paddingBottom: "56.25%" }}
+            >
                 <iframe
                     src={`https://www.youtube-nocookie.com/embed/${videoId}`}
                     title="YouTube video"
