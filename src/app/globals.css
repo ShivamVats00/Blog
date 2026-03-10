@@ -205,3 +205,21 @@
 .animate-heartbeat {
   animation: heartBeat 0.3s ease-in-out;
 }
+
+/* Embed containers */
+.youtube-embed-container {
+  max-width: 100%;
+}
+
+.twitter-embed-container {
+  max-width: 100%;
+}
+
+.twitter-embed-container>div {
+  min-height: 200px;
+}
+
+/* Override Twitter widget iframe styles for dark theme consistency */
+.twitter-embed-container .twitter-tweet {
+  margin: 0 auto !important;
+}

@@ -4,14 +4,19 @@ import PostFeed from "@/components/PostFeed";
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  const posts = await getPosts();
+  let serializedPosts: any[] = [];
+  let likedPostIds: string[] = [];
+  let dbError = false;
 
-  const serializedPosts = posts.map((p: any) => ({
-    ...p,
-    createdAt: p.createdAt.toISOString(),
-  }));
-
-  const likedPostIds: string[] = [];
+  try {
+    const posts = await getPosts();
+    serializedPosts = posts.map((p: any) => ({
+      ...p,
+      createdAt: p.createdAt.toISOString(),
+    }));
+  } catch {
+    dbError = true;
+  }
 
   return (
     <div className="min-h-screen bg-background text-foreground antialiased selection:bg-primary/30 selection:text-primary-foreground">
@@ -37,7 +42,17 @@ export default async function HomePage() {
         </header>
 
         <main className="flex-grow max-w-3xl w-full mx-auto px-6 py-10 md:py-16">
-          <PostFeed posts={serializedPosts} likedPostIds={likedPostIds} />
+          {dbError ? (
+            <div className="text-center py-20 animate-in fade-in zoom-in duration-500">
+              <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-secondary flex items-center justify-center border border-border shadow-sm">
+                <span className="text-2xl">⚡</span>
+              </div>
+              <p className="text-muted-foreground text-lg font-display">Connecting to the universe...</p>
+              <p className="text-muted-foreground/60 text-sm mt-2 font-body">Please try refreshing in a moment.</p>
+            </div>
+          ) : (
+            <PostFeed posts={serializedPosts} likedPostIds={likedPostIds} />
+          )}
         </main>
 
         <footer className="py-8 border-t border-border text-center px-6">

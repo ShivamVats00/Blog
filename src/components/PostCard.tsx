@@ -3,6 +3,7 @@
 import { useRef, useEffect, useState, useCallback } from "react";
 import { Heart, Eye } from "lucide-react";
 import { recordView, toggleLike } from "@/actions/interactions";
+import PostContent from "./PostContent";
 
 interface PostCardProps {
     post: {
@@ -87,9 +88,7 @@ export default function PostCard({ post, guestId, initiallyLiked }: PostCardProp
                     {formatTimestamp(post.createdAt)}
                 </p>
 
-                <p className="text-foreground text-base md:text-[17px] leading-relaxed whitespace-pre-wrap mb-6 font-body font-light">
-                    {post.content}
-                </p>
+                <PostContent content={post.content} />
 
                 {post.mediaUrl && (
                     <div className="mb-5 rounded-xl overflow-hidden border border-border/50">
